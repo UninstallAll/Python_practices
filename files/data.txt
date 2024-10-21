@@ -1,0 +1,6 @@
+temperatures
+7
+89
+3
+45
+13
