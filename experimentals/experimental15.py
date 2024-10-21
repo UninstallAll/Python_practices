@@ -1,6 +1,6 @@
 import glob
 
-from main import number
+from Backend_Main import number
 
 myfiles = glob.glob('../files/*.txt')
 

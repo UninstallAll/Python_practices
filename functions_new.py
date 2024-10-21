@@ -10,5 +10,6 @@ def write_todos_doc(todos_local, filepath = FILEPATH):
     with open(filepath, 'w') as file_local:
         file_local.writelines(todos_local)
 
-
-print(__name__)
+if __name__ == '__main__':
+    print(__name__)
+    print(read_todos_doc())
