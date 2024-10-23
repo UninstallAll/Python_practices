@@ -10,9 +10,16 @@ list_box = fsg.Listbox(values = functions_new.read_todos_doc(),
                        key = 'todos', enable_events = True,
                        size = [45,10])
 edit_button = fsg.Button('Edit')
+complete_button = fsg.Button('Complete')
+exit_button = fsg.Button('Exit')
+
+layout = [[label],
+          [input_box, add_button],
+          [list_box, edit_button,complete_button],
+          [exit_button]]
 
 windows = fsg.Window('A FUCKING TODO APP',
-                     layout=[[label],[input_box,add_button],[list_box,edit_button]],
+                     layout=layout,
                      font = ('Helvetica',15))
 
 while True:
@@ -39,11 +46,23 @@ while True:
             functions_new.write_todos_doc(todos)
             windows['todos'].update(values = todos)
 
+        case 'Complete':
+            todo_to_complete = values['todos'][0]
+            todos = functions_new.read_todos_doc()
+            todos.remove(todo_to_complete)
+            functions_new.write_todos_doc(todos)
+            windows['todos'].update(values = todos)
+            windows['todo'].update(value = values['todos'][0])
+
+        case 'Exit':
+            break
+
+
         case 'todos':
             windows['todo'].update(value = values['todos'][0])
 
 
-        case fsg.WINDOW_CLOSED:
+        case fsg.WINDOW_CLOSED :
             break
 
 windows.close()
