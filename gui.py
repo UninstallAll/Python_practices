@@ -2,6 +2,11 @@ from cProfile import label
 import functions_new
 import FreeSimpleGUI as fsg
 import time
+import os
+
+if not os.path.exists('todos.txt'):
+    with open('todos.txt','w') as file:
+        pass
 
 fsg.theme('Green')
 
@@ -9,6 +14,8 @@ label_time = fsg.Text('',key='clock')
 label = fsg.Text('Type in a todo thing')
 input_box = fsg.InputText(tooltip='Enter a todo', key ='todo')
 add_button = fsg.Button('Add')
+# add_button = fsg.Button(key = 'Add', size = 2, image_source = 'add.png',
+#                         mouseover_colors= 'LightBlue2',tooltip = 'Add todo')
 list_box = fsg.Listbox(values = functions_new.read_todos_doc(),
                        key = 'todos', enable_events = True,
                        size = [45,10])
