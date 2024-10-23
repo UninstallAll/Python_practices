@@ -1,8 +1,11 @@
 from cProfile import label
 import functions_new
-
 import FreeSimpleGUI as fsg
+import time
 
+fsg.theme('Green')
+
+label_time = fsg.Text('',key='clock')
 label = fsg.Text('Type in a todo thing')
 input_box = fsg.InputText(tooltip='Enter a todo', key ='todo')
 add_button = fsg.Button('Add')
@@ -13,7 +16,8 @@ edit_button = fsg.Button('Edit')
 complete_button = fsg.Button('Complete')
 exit_button = fsg.Button('Exit')
 
-layout = [[label],
+layout = [[label_time],
+          [label],
           [input_box, add_button],
           [list_box, edit_button,complete_button],
           [exit_button]]
@@ -23,11 +27,13 @@ windows = fsg.Window('A FUCKING TODO APP',
                      font = ('Helvetica',15))
 
 while True:
-    event, values = windows.read()
-    print(f'event: {event}')
-    print(f'values: {values}')
-    # print(f'values_todos: {f'{values['todos']}'}')
-    print(f"values_todos: {values['todos']}")
+    event, values = windows.read(timeout=200)
+    windows['clock'].update(value=time.strftime('%Y-%m-%d %H:%M:%S'))
+    # print(f'event: {event}')
+    # print(f'values: {values}')
+    # # print(f'values_todos: {f'{values['todos']}'}')
+    # print(f"values_todos: {values['todos']}")
+
 
     match event:
         case 'Add':
@@ -50,12 +56,15 @@ while True:
                 fsg.popup('Please enter a item',font = ('Helvetica',15))
 
         case 'Complete':
-            todo_to_complete = values['todos'][0]
-            todos = functions_new.read_todos_doc()
-            todos.remove(todo_to_complete)
-            functions_new.write_todos_doc(todos)
-            windows['todos'].update(values = todos)
-            windows['todo'].update(value ='')
+            try:
+                todo_to_complete = values['todos'][0]
+                todos = functions_new.read_todos_doc()
+                todos.remove(todo_to_complete)
+                functions_new.write_todos_doc(todos)
+                windows['todos'].update(values = todos)
+                windows['todo'].update(value ='')
+            except IndexError:
+                fsg.popup('Please enter a item', font=('Helvetica', 15))
 
         case 'Exit':
             break
@@ -66,6 +75,7 @@ while True:
 
 
         case fsg.WINDOW_CLOSED :
+            # windows.close()
             break
 
 windows.close()
