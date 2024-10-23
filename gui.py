@@ -37,14 +37,17 @@ while True:
             functions_new.write_todos_doc(todos)
             windows['todos'].update(values=todos)
         case 'Edit':
-            todo_to_edit = values['todos'][0]
-            new_todo = values['todo']+ '\n'
+            try:
+                todo_to_edit = values['todos'][0]
+                new_todo = values['todo']+ '\n'
 
-            todos = functions_new.read_todos_doc()
-            index = todos.index(todo_to_edit)
-            todos[index] = new_todo
-            functions_new.write_todos_doc(todos)
-            windows['todos'].update(values = todos)
+                todos = functions_new.read_todos_doc()
+                index = todos.index(todo_to_edit)
+                todos[index] = new_todo
+                functions_new.write_todos_doc(todos)
+                windows['todos'].update(values = todos)
+            except IndexError:
+                fsg.popup('Please enter a item',font = ('Helvetica',15))
 
         case 'Complete':
             todo_to_complete = values['todos'][0]
@@ -52,7 +55,7 @@ while True:
             todos.remove(todo_to_complete)
             functions_new.write_todos_doc(todos)
             windows['todos'].update(values = todos)
-            windows['todo'].update(value = values['todos'][0])
+            windows['todo'].update(value ='')
 
         case 'Exit':
             break
