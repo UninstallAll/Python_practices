@@ -14,10 +14,17 @@ st.title('A fucking todo app')
 st.subheader('I said this is just a fucking todo app')
 st.write('there is no fucking ending')
 
-for todo in todos:
-    st.checkbox(todo)
+for index, todo in enumerate(todos):
+    checkbox = st.checkbox(todo, key= todo)
+    if checkbox:
+        todos.pop(index)
+        functions_new.write_todos_doc(todos)
+        del st.session_state[todo]
+        st.rerun()
+
+    # print(type(checkbox))
 
 st.text_input(label='Enter a shit here:', placeholder='Enter a shit here:',
               on_change=add_todo, key = 'new_todo')
 
-st.session_state
+# st.session_state
